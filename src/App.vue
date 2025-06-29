@@ -1,7 +1,5 @@
 <template>
-  <div class="main-container">
-    <FormGenerator v-model:fields="fields" />
-  </div>
+  <div class="main-container"><FormGenerator v-model:fields="fields" />{{ fields }}</div>
 </template>
 
 <script setup lang="ts">

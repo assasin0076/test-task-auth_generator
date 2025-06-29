@@ -10,30 +10,48 @@
 
 <script setup lang="ts">
 import TField from '@/types/TField'
-import { computed, defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import TFieldTypes from '@/types/TFieldTypes'
 import TGeneratorFieldUpdateEmit from '@/types/TGeneratorFieldUpdateEmit'
 
 const props = defineProps<{
   fields: TField[]
 }>()
-const model = defineModel('fields')
+
+const model = defineModel<TField[]>('fields')
 
 const componentMap = {
-  input: () => import('../components/FormFields/InlutFIeld.vue'),
-}
-const getComponent = (type: TFieldTypes) => {
-  const importer = componentMap[type]
-  if (!importer) {
-    return null
-  }
-  return defineAsyncComponent(importer)
+  input: () => import('./FormFields/InputFIeld.vue'),
 }
 
-const updateFieldValue = (val) => {
-  const newFields = JSON.parse(JSON.stringify(props.fields))
-  const foundField = newFields.find((field) => field.label === val.field.label)
-  foundField.value = val.newValue
+const cachedComponents = ref<Record<string, any>>({})
+
+const getComponent = (type: TFieldTypes) => {
+  if (!componentMap[type]) {
+    console.warn(`Компонент для типа "${type}" не найден`)
+    return null
+  }
+
+  if (cachedComponents.value[type]) {
+    return cachedComponents.value[type]
+  }
+
+  const component = defineAsyncComponent(componentMap[type])
+  cachedComponents.value[type] = component
+  return component
+}
+
+const updateFieldValue = (payload: TGeneratorFieldUpdateEmit) => {
+  const newFields = props.fields.map((field) => {
+    if (field.label === payload.field.label) {
+      return {
+        ...field,
+        value: payload.newValue,
+      }
+    }
+    return field
+  })
+
   model.value = newFields
 }
 </script>
