@@ -24,6 +24,7 @@ const model = defineModel<TField[]>('fields')
 const componentMap = {
   input: () => import('./FormFields/InputFIeld.vue'),
   select: () => import('./FormFields/SelectFIeld.vue'),
+  checkbox: () => import('./FormFields/CheckboxFIeld.vue'),
 }
 
 const cachedComponents = ref<Record<string, any>>({})

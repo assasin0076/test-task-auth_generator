@@ -35,11 +35,17 @@ export default [
   {
     label: 'роль',
     type: 'select',
-    value: '',
+    value: null,
     required: true,
     options: [
       { label: 'админ', value: 'admin' },
       { label: 'пользователь', value: 'user' },
     ],
+  },
+  {
+    label: 'согласие',
+    type: 'checkbox',
+    value: false,
+    required: true,
   },
 ]
