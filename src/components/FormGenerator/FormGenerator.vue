@@ -13,6 +13,7 @@ import TField from '@/types/TField'
 import { defineAsyncComponent, ref } from 'vue'
 import TFieldTypes from '@/types/TFieldTypes'
 import TGeneratorFieldUpdateEmit from '@/types/TGeneratorFieldUpdateEmit'
+import './common-styles.scss'
 
 const props = defineProps<{
   fields: TField[]
@@ -22,6 +23,7 @@ const model = defineModel<TField[]>('fields')
 
 const componentMap = {
   input: () => import('./FormFields/InputFIeld.vue'),
+  select: () => import('./FormFields/SelectFIeld.vue'),
 }
 
 const cachedComponents = ref<Record<string, any>>({})
